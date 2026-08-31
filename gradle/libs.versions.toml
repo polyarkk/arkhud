@@ -1,0 +1,33 @@
+[versions]
+ferrite-core = "6.0.1"               # Modrinth slug: ferrite-core
+embeddium = "0.3.31+mc1.20.1"     # Modrinth slug: embeddium
+modern-ui = "3.12.0.1"            # Modrinth slug: modern-ui
+mouse-tweaks = "1.20.1-2.25.1-forge" # Modrinth slug: mouse-tweaks
+tacz = "1.1.8-hotfix"
+ipn = "forge-1.20.1-1.10.20"
+libipn = "forge-1.20-4.0.2"
+kotlin-for-forge = "4.12.0"
+mekanism = "6552911" # 10.4.16.80
+jei = "8752938" # 15.49.0.198
+jei-integration = "4999754" # 10.0.00
+parcool = "1.20.1-3.4.3.3"
+crock-pot = "6681767"
+iss = "6833927"
+pasterdream = "7461701"
+
+[libraries]
+ferrite-core = { module = "maven.modrinth:ferrite-core", version.ref = "ferrite-core" }
+embeddium = { module = "maven.modrinth:embeddium", version.ref = "embeddium" }
+modern-ui = { module = "maven.modrinth:modern-ui", version.ref = "modern-ui" }
+mouse-tweaks = { module = "maven.modrinth:mouse-tweaks", version.ref = "mouse-tweaks" }
+tacz = { module = "maven.modrinth:timeless-and-classics-zero", version.ref = "tacz" }
+ipn = { module = "maven.modrinth:inventory-profiles-next", version.ref = "ipn" }
+libipn = { module = "maven.modrinth:libipn", version.ref = "libipn" }
+kotlin-for-forge = { module = "maven.modrinth:kotlin-for-forge", version.ref = "kotlin-for-forge" }
+mekanism = { module = "curse.maven:mekanism-268560", version.ref = "mekanism" }
+jei = { module = "curse.maven:jei-238222", version.ref = "jei" }
+jei-integration = { module = "curse.maven:jei-integration-265917", version.ref = "jei-integration" }
+parcool = { module = "maven.modrinth:parcool", version.ref = "parcool" }
+crock-pot = { module = "curse.maven:crock-pot-404523", version.ref = "crock-pot" }
+iss = { module = "curse.maven:irons-spells-n-spellbooks-855414", version.ref = "iss" }
+pasterdream = { module = "curse.maven:pasterdream-982745", version.ref = "pasterdream" }

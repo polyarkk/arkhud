@@ -1,0 +1,29 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "cc.arkko.mc.arkhud.forge.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "arkhud.refmap.json",
+  "plugin": "cc.arkko.mc.arkhud.forge.mixins.MixinPluginOptionalMod",
+  "mixins": [
+  ],
+  "client": [
+    "ClientMixinGui",
+    "ClientMixinForgeGui",
+    "ClientMixinGunHudOverlay",
+    "ClientMixinHumanoidArmorLayer",
+    "ClientMixinGameRenderer",
+    "ClientMixinKeyboardHandler",
+    "ClientMixinParcoolStaminaHUDController",
+    "ClientMixinIpnLockSlotsHandler",
+    "ClientMixinCrockPotGnawsGiftHungerOverlay",
+    "ClientMixinIssManaBarOverlay",
+    "ClientMixinPasterDreamPlayerHealthHUD"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
