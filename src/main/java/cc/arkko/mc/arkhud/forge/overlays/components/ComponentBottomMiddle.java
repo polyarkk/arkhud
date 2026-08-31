@@ -1,17 +1,31 @@
+/*
+ * Copyright (c) 2026.
+ * This file is part of ArkHUD (https://github.com/polyarkk/arkhud)
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, version 3.0, as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ *  this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package cc.arkko.mc.arkhud.forge.overlays.components;
 
 import cc.arkko.mc.arkhud.forge.ModForgeArkHud;
-import cc.arkko.mc.arkhud.forge.configs.ConfigManager;
 import cc.arkko.mc.arkhud.forge.utils.SealedValue;
 import cc.arkko.mc.arkhud.forge.utils.U;
 import com.alrex.parcool.common.capability.IStamina;
-import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
-import io.redspace.ironsspellbooks.item.CastingItem;
 import io.redspace.ironsspellbooks.player.ClientMagicData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraftforge.common.ForgeMod;
 
 import static io.redspace.ironsspellbooks.api.registry.AttributeRegistry.MAX_MANA;
 
@@ -49,7 +63,7 @@ public class ComponentBottomMiddle {
 
         renderBar(
             mc, guiGraphics, screenWidth, screenHeight, 0xff20b2fb, slot++,
-            air, maxAir, (double) air / maxAir < .3f, fullHideDeadlineAirBar
+            air, maxAir, (double)air / maxAir < .3f, fullHideDeadlineAirBar
         );
 
         if (ModForgeArkHud.DEP_INSTALLED_PARCOOL) {

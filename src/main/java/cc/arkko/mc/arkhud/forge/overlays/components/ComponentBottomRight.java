@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2026.
+ * This file is part of ArkHUD (https://github.com/polyarkk/arkhud)
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, version 3.0, as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ *  this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package cc.arkko.mc.arkhud.forge.overlays.components;
 
 import cc.arkko.mc.arkhud.forge.C;
@@ -31,7 +49,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.AirItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import java.text.DecimalFormat;
@@ -94,7 +111,8 @@ public class ComponentBottomRight {
         if (isCompatibleEnergyToolItem(itemStack)) {
             // 储电工具：闪电icon+电量百分比
             marginRight += renderEnergyToolItemHud(guiGraphics, mc, ply, screenWidth, screenHeight, itemStack, marginRight);
-        } else if (itemStack.is(TAG_FORGE_TOOLS)) {
+            // } else if (itemStack.is(TAG_FORGE_TOOLS)) {
+        } else if (itemStack.isDamageableItem()) {
             // 工具/武器：耐久度（扳手icon+数字）
             marginRight += renderToolItemHud(guiGraphics, mc, ply, screenWidth, screenHeight, itemStack, marginRight);
         }
