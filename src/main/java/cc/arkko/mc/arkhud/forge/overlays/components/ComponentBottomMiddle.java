@@ -66,7 +66,7 @@ public class ComponentBottomMiddle {
             air, maxAir, (double)air / maxAir < .3f, fullHideDeadlineAirBar
         );
 
-        if (ModForgeArkHud.DEP_INSTALLED_PARCOOL) {
+        if (ModForgeArkHud.depParcool) {
             IStamina stamina = IStamina.get(ply);
 
             if (stamina == null) {
@@ -79,7 +79,7 @@ public class ComponentBottomMiddle {
             );
         }
 
-        if (ModForgeArkHud.DEP_INSTALLED_ISS) {
+        if (ModForgeArkHud.depIss) {
             int mana = ClientMagicData.getPlayerMana();
             int maxMana = (int)ply.getAttributeValue(MAX_MANA.get());
 

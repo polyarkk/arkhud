@@ -41,9 +41,9 @@ public class ClientMixinKeyboardHandler {
         cancellable = true
     )
     public void onF1Key(CallbackInfo ci) {
-        ModForgeArkHud.HUD_STATE = ModForgeArkHud.HUD_STATE.next();
+        ModForgeArkHud.hudState = ModForgeArkHud.hudState.next();
 
-        minecraft.options.hideGui = !ModForgeArkHud.HUD_STATE.equals(HudState.ALL_VISIBLE);
+        minecraft.options.hideGui = !ModForgeArkHud.hudState.equals(HudState.ALL_VISIBLE);
 
         ci.cancel();
     }

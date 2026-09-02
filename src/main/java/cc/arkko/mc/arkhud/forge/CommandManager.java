@@ -19,20 +19,26 @@
 package cc.arkko.mc.arkhud.forge;
 
 import cc.arkko.mc.arkhud.forge.configs.ConfigManager;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.*;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.slf4j.Logger;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+@OnlyIn(Dist.CLIENT)
 public class CommandManager {
     private static final Logger LOGGER = LogUtils.getLogger();
 
@@ -43,7 +49,35 @@ public class CommandManager {
         registerCommandConfig(builder, "hideArmor", boolean.class, () -> ConfigManager.hideArmor, ConfigManager::setHideArmor);
         registerCommandConfig(builder, "potionEffects", boolean.class, () -> ConfigManager.potionEffects, ConfigManager::setPotionEffects);
 
+        if (!FMLLoader.isProduction()) {
+            registerCommand(builder, "debugGlInvalidOperation", ctx -> {
+                    printToChat(ctx, String.format("times: %d", ModForgeArkHud.glInvalidOperation1282s));
+
+                    return 1;
+                }
+            );
+            registerCommand(builder, "debugStencilStatus", ctx -> {
+                    boolean enabled = Minecraft.getInstance().getMainRenderTarget().isStencilEnabled();
+
+                    printToChat(ctx, String.format("stencil: %s", enabled ? "enabled" : "disabled"));
+
+                    return 1;
+                }
+            );
+        }
+
         dispatcher.register(builder);
+    }
+
+    private static void printToChat(CommandContext<CommandSourceStack> ctx, String stuff) {
+        ctx.getSource().sendSuccess(() -> Component.literal(stuff), false);
+    }
+
+    private static void registerCommand(
+        LiteralArgumentBuilder<CommandSourceStack> builder,
+        String entrypoint, Command<CommandSourceStack> cb
+    ) {
+        builder.then(Commands.literal(entrypoint).executes(cb));
     }
 
     private static <TValue> void registerCommandConfig(
@@ -74,7 +108,7 @@ public class CommandManager {
         builder.then(
             Commands.literal(name)
                 .executes(ctx -> {
-                    ctx.getSource().sendSuccess(() -> Component.literal(String.format("ConfigManager [%s]: %s", name, getter.get())), false);
+                    printToChat(ctx, String.format("ConfigManager [%s]: %s", name, getter.get()));
 
                     return 1;
                 })
@@ -83,7 +117,7 @@ public class CommandManager {
 
                     setter.accept(v);
 
-                    ctx.getSource().sendSuccess(() -> Component.literal(String.format("Set config [%s] to: %s", name, getter.get())), false);
+                    printToChat(ctx, String.format("Set config [%s] to: %s", name, getter.get()));
 
                     return 1;
                 }))

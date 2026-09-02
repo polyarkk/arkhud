@@ -95,7 +95,7 @@ public class StaticComponents {
 
             String ammo = Strings.EMPTY;
 
-            if (ModForgeArkHud.DEP_INSTALLED_TACZ && lastToolHighlight.getItem() instanceof IGun gun) {
+            if (ModForgeArkHud.depTacz && lastToolHighlight.getItem() instanceof IGun gun) {
                 GunData gunData = TimelessAPI.getClientGunIndex(gun.getGunId(lastToolHighlight)).map(ClientGunIndex::getGunData).orElse(null);
 
                 if (gunData != null) {

@@ -160,44 +160,44 @@ dependencies {
 
     optionalMod(libs.parcool) {
         setSources false
-        setDevRuntime true
+        setDevRuntime false
     }
 
     optionalMod(libs.ipn) {
         setSources false
-        setDevRuntime true
+        setDevRuntime false
     }
 
     optionalMod(libs.crock.pot) {
         setSources false
-        setDevRuntime true
+        setDevRuntime false
     }
 
     optionalMod(libs.iss) {
         setSources false
-        setDevRuntime true
+        setDevRuntime false
     }
 
     optionalMod(libs.pasterdream) {
         setSources false
-        setDevRuntime true
+        setDevRuntime false
     }
 
-    runtimeOnly fg.deobf(libs.ferrite.core)
-    runtimeOnly fg.deobf(libs.embeddium)
-    runtimeOnly fg.deobf(libs.modern.ui)
-    runtimeOnly fg.deobf(libs.mouse.tweaks)
-    runtimeOnly fg.deobf(libs.kotlin.for.forge)
-    runtimeOnly fg.deobf(libs.jei)
-    runtimeOnly fg.deobf(libs.jei.integration)
-    runtimeOnly fg.deobf(libs.mekanism)
-    runtimeOnly fg.deobf(libs.libipn)
-    runtimeOnly fg.deobf("curse.maven:xaeros-minimap-263420:8449808")
-    runtimeOnly fg.deobf("curse.maven:xaeros-world-map-317780:8698646")
-    runtimeOnly fg.deobf("curse.maven:playeranimator-658587:4587214")
-    runtimeOnly fg.deobf("curse.maven:curios-309927:6418456")
-    runtimeOnly fg.deobf("curse.maven:caelus-308989:5281700")
-    runtimeOnly fg.deobf("curse.maven:geckolib-388172:8285794")
+//    runtimeOnly fg.deobf(libs.ferrite.core)
+//    runtimeOnly fg.deobf(libs.embeddium)
+//    runtimeOnly fg.deobf(libs.modern.ui)
+//    runtimeOnly fg.deobf(libs.mouse.tweaks)
+//    runtimeOnly fg.deobf(libs.kotlin.for.forge)
+//    runtimeOnly fg.deobf(libs.jei)
+//    runtimeOnly fg.deobf(libs.jei.integration)
+//    runtimeOnly fg.deobf(libs.mekanism)
+//    runtimeOnly fg.deobf(libs.libipn)
+//    runtimeOnly fg.deobf("curse.maven:xaeros-minimap-263420:8449808")
+//    runtimeOnly fg.deobf("curse.maven:xaeros-world-map-317780:8698646")
+//    runtimeOnly fg.deobf("curse.maven:playeranimator-658587:4587214")
+//    runtimeOnly fg.deobf("curse.maven:curios-309927:6418456")
+//    runtimeOnly fg.deobf("curse.maven:caelus-308989:5281700")
+//    runtimeOnly fg.deobf("curse.maven:geckolib-388172:8285794")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 

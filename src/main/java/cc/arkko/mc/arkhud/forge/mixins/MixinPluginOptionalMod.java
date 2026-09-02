@@ -28,7 +28,7 @@ import java.util.Set;
 
 
 public class MixinPluginOptionalMod implements IMixinConfigPlugin {
-    private final Map<String, String> modClassNamePrefixes = Map.of(
+    private final Map<String, String> optionalModClassNamePrefixes = Map.of(
         "tacz", "com.tacz",
         "parcool", "com.alrex.parcool",
         "inventoryprofilesnext", "org.anti_ad.mc.ipn",
@@ -48,8 +48,8 @@ public class MixinPluginOptionalMod implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        for (Map.Entry<String, String> entry : modClassNamePrefixes.entrySet()) {
-            if (mixinClassName.startsWith(entry.getValue())) {
+        for (Map.Entry<String, String> entry : optionalModClassNamePrefixes.entrySet()) {
+            if (targetClassName.startsWith(entry.getValue())) {
                 return FMLLoader.getLoadingModList().getModFileById(entry.getKey()) != null;
             }
         }

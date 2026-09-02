@@ -52,3 +52,21 @@ forge_version=47.4.23
 gradle path: `D:\dev\dotgradle`
 
 shell priority: use powershell in windows, bash in linux or zsh in macos 
+
+## Verifying Minecraft APIs / mappings
+
+Do not guess MC API/field/method names. Verify against the official mappings cached by ForgeGradle before asserting.
+
+- Mappings file: `<gradle_home>\caches\forge_gradle\minecraft_repo\versions\<mc_version>\client_mappings.txt`
+
+    - gradle home is `D:\dev\dotgradle` (see "Project" section)
+    - example: `D:\dev\dotgradle\caches\forge_gradle\minecraft_repo\versions\1.20.1\client_mappings.txt`
+
+- Check whether a member exists (PowerShell) e.g.:`getFrameTime`, `getOffhandItem`:
+
+  ```powershell
+  $m = Get-Content "<mappings file>"
+  $m | Select-String -Pattern "getFrameTime|getOffhandItem"
+  ```
+
+  

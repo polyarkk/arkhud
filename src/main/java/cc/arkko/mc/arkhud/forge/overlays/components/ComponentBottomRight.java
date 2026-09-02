@@ -86,7 +86,7 @@ public class ComponentBottomRight {
             return;
         }
 
-        if (ModForgeArkHud.DEP_INSTALLED_TACZ && renderTaczGunHud(guiGraphics, mc, ply, screenWidth, screenHeight)) {
+        if (ModForgeArkHud.depTacz && renderTaczGunHud(guiGraphics, mc, ply, screenWidth, screenHeight)) {
             return;
         }
 
@@ -222,6 +222,9 @@ public class ComponentBottomRight {
         };
         RenderSystem.setShaderColor(1, 1, 1, 1);
         guiGraphics.blit(fireModeTexture, (int)(screenWidth - 60.5 + mc.font.width(currentAmmoCountText) * 1.5), screenHeight - 25, 0, 0, 10, 10, 10, 10);
+
+        RenderSystem.disableBlend();
+        RenderSystem.disableDepthTest();
 
         return true;
     }

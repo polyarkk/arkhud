@@ -19,18 +19,22 @@
 package cc.arkko.mc.arkhud.forge.mixins;
 
 import cc.arkko.mc.arkhud.forge.ModForgeArkHud;
-import com.tacz.guns.client.gui.overlay.GunHudOverlay;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import com.mojang.blaze3d.platform.GlDebug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = GunHudOverlay.class, remap = false)
-public abstract class ClientMixinGunHudOverlay implements IGuiOverlay {
-    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    public void suppressRenderGunHud(CallbackInfo ci) {
-        if (ModForgeArkHud.shouldRenderCustomHud()) {
+@Mixin(GlDebug.class)
+public class ClientMixinGlDebug {
+    @Inject(method = "printDebugLog", at = @At("HEAD"), cancellable = true)
+    private static void GlInvalidOperationQuestionMarkWhatGlInvalidOperation(
+        int p_84039_, int p_84040_, int p_84041_, int p_84042_,
+        int p_84043_, long p_84044_, long p_84045_, CallbackInfo ci
+    ) {
+        if (p_84041_ == 1282) {
+            ModForgeArkHud.glInvalidOperation1282s++;
+
             ci.cancel();
         }
     }

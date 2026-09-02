@@ -11,14 +11,15 @@
     "ClientMixinCrockPotGnawsGiftHungerOverlay",
     "ClientMixinForgeGui",
     "ClientMixinGameRenderer",
+    "ClientMixinGlDebug",
     "ClientMixinGui",
-    "ClientMixinGunHudOverlay",
     "ClientMixinHumanoidArmorLayer",
     "ClientMixinIpnLockSlotsHandler",
     "ClientMixinIssManaBarOverlay",
     "ClientMixinKeyboardHandler",
     "ClientMixinParcoolStaminaHUDController",
-    "ClientMixinPasterDreamPlayerHealthHUD"
+    "ClientMixinPasterDreamPlayerHealthHUD",
+    "ClientMixinTaczGunHudOverlay"
   ],
   "injectors": {
     "defaultRequire": 1

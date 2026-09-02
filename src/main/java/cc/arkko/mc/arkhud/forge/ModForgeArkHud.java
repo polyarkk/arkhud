@@ -39,22 +39,24 @@ public class ModForgeArkHud {
     public static final String MOD_ID = "arkhud";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static boolean DEP_INSTALLED_TACZ = false;
-    public static boolean DEP_INSTALLED_PARCOOL = false;
-    public static boolean DEP_INSTALLED_IPN = false;
-    public static boolean DEP_INSTALLED_CROCK_POT = false;
-    public static boolean DEP_INSTALLED_ISS = false;
-    public static boolean DEP_INSTALLED_PASTER_DREAM = false;
+    public static boolean depTacz = false;
+    public static boolean depParcool = false;
+    public static boolean depIpn = false;
+    public static boolean depCrockPot = false;
+    public static boolean depIss = false;
+    public static boolean depPasterDream = false;
 
-    public static HudState HUD_STATE = HudState.ALL_VISIBLE;
+    public static HudState hudState = HudState.ALL_VISIBLE;
+
+    public static long glInvalidOperation1282s = 0;
 
     public ModForgeArkHud() {
-        DEP_INSTALLED_TACZ = ModList.get().isLoaded("tacz");
-        DEP_INSTALLED_PARCOOL = ModList.get().isLoaded("parcool");
-        DEP_INSTALLED_IPN = ModList.get().isLoaded("inventoryprofilesnext");
-        DEP_INSTALLED_CROCK_POT = ModList.get().isLoaded("crockpot");
-        DEP_INSTALLED_ISS = ModList.get().isLoaded("irons_spellbooks");
-        DEP_INSTALLED_PASTER_DREAM = ModList.get().isLoaded("pasterdream");
+        depTacz = ModList.get().isLoaded("tacz");
+        depParcool = ModList.get().isLoaded("parcool");
+        depIpn = ModList.get().isLoaded("inventoryprofilesnext");
+        depCrockPot = ModList.get().isLoaded("crockpot");
+        depIss = ModList.get().isLoaded("irons_spellbooks");
+        depPasterDream = ModList.get().isLoaded("pasterdream");
         MinecraftForge.EVENT_BUS.register(this);
         ConfigManager.init();
     }
@@ -65,7 +67,7 @@ public class ModForgeArkHud {
             return;
         }
 
-        if (DEP_INSTALLED_IPN) {
+        if (depIpn) {
             IpnLockedHotbarSlots.onTick();
         }
     }
@@ -94,6 +96,7 @@ public class ModForgeArkHud {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent ev) {
+            LOGGER.info("registering overlays");
             ev.registerAboveAll("arkhud", new OverlayHudMain());
         }
     }

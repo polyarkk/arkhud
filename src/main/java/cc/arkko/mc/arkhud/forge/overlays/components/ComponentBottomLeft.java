@@ -35,6 +35,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.PlayerModelPart;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.scores.PlayerTeam;
 
 import java.util.Collection;
@@ -104,7 +105,7 @@ public class ComponentBottomLeft {
 
         if (hasHungerEffect) {
             hungerColor = 0xff56ad56;
-        } else if (ModForgeArkHud.DEP_INSTALLED_CROCK_POT && ply.hasEffect(CrockPotEffects.GNAWS_GIFT.get())) {
+        } else if (ModForgeArkHud.depCrockPot && ply.hasEffect(CrockPotEffects.GNAWS_GIFT.get())) {
             hungerColor = 0xff6aa6ff;
         }
 
@@ -149,6 +150,31 @@ public class ComponentBottomLeft {
                 }
                 RenderSystem.disableBlend();
             }
+        }
+
+        // 副手槽位：渲染在头像/名字text/生命值/饱食度右侧，槽位中央 y 对齐这组元素的中间
+        // 背景、outline 与物品渲染方式与 ComponentHotbar 一致：16px 透明黑底 + 1px 深灰 outline + 物品 0.8x 缩放
+        ItemStack offhandStack = ply.getOffhandItem();
+
+        if (!offhandStack.isEmpty()) {
+            final int slotSize = 16;
+            final int slotGap = 4;
+            // 生命值/饱食度条右端为 x+72，槽位在其右侧留 4px
+            final int offhandX = x + 72 + slotGap;
+            // 头像/名字text/生命值/饱食度纵向覆盖 y..y+15，其中点 y+7.5 取整为 y+8 作为槽位中央
+            final int offhandCenterY = y + 8;
+            final int offhandY = offhandCenterY - slotSize / 2;
+
+            // 背景体块 + outline：与 ComponentHotbar 相同，整体推到 z=-90 保证渲染在物品之后
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(0.0F, 0.0F, -90.0F);
+
+            guiGraphics.fill(offhandX, offhandY, offhandX + slotSize, offhandY + slotSize, 0x80000000);
+            guiGraphics.renderOutline(offhandX - 1, offhandY - 1, slotSize + 2, slotSize + 2, 0xff333333);
+
+            guiGraphics.pose().popPose();
+
+            StaticComponents.renderItemSlot(guiGraphics, mc, offhandX, offhandY, mc.getFrameTime(), ply, offhandStack, 0);
         }
     }
 
