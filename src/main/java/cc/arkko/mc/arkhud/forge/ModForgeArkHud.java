@@ -19,7 +19,6 @@
 package cc.arkko.mc.arkhud.forge;
 
 import cc.arkko.mc.arkhud.forge.compacts.IpnLockedHotbarSlots;
-import cc.arkko.mc.arkhud.forge.configs.ConfigManager;
 import cc.arkko.mc.arkhud.forge.overlays.OverlayHudMain;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
@@ -42,7 +41,6 @@ public class ModForgeArkHud {
     public static boolean depTacz = false;
     public static boolean depParcool = false;
     public static boolean depIpn = false;
-    public static boolean depCrockPot = false;
     public static boolean depIss = false;
     public static boolean depPasterDream = false;
 
@@ -54,7 +52,6 @@ public class ModForgeArkHud {
         depTacz = ModList.get().isLoaded("tacz");
         depParcool = ModList.get().isLoaded("parcool");
         depIpn = ModList.get().isLoaded("inventoryprofilesnext");
-        depCrockPot = ModList.get().isLoaded("crockpot");
         depIss = ModList.get().isLoaded("irons_spellbooks");
         depPasterDream = ModList.get().isLoaded("pasterdream");
         MinecraftForge.EVENT_BUS.register(this);

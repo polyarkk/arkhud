@@ -40,7 +40,7 @@ import java.util.Objects;
 public class StaticComponents {
     private static final float ITEM_SCALE = 0.8F;
 
-    static void renderItemSlot(GuiGraphics guiGraphics, Minecraft mc, int x, int y, float partialTick, Player player, ItemStack stack, int seed) {
+    public static void renderItemSlot(GuiGraphics guiGraphics, Minecraft mc, int x, int y, float partialTick, Player player, ItemStack stack, int seed) {
         if (stack.isEmpty()) {
             return;
         }

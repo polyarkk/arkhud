@@ -18,10 +18,8 @@
 
 package cc.arkko.mc.arkhud.forge.overlays.components;
 
-import cc.arkko.mc.arkhud.forge.ModForgeArkHud;
-import cc.arkko.mc.arkhud.forge.configs.ConfigManager;
+import cc.arkko.mc.arkhud.forge.ConfigManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.sihenzhang.crockpot.effect.CrockPotEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.PlayerFaceRenderer;
@@ -43,9 +41,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ComponentBottomLeft {
-    double displayHp = 20;
+    double displayScaledHp = 1;
 
-    public void render(Minecraft mc, GuiGraphics guiGraphics, int screenHeight) {
+    public void render(Minecraft mc, float partialTick, GuiGraphics guiGraphics, int screenHeight) {
         AbstractClientPlayer ply = mc.player;
 
         if (ply == null) {
@@ -75,14 +73,14 @@ public class ComponentBottomLeft {
 
         // health
         float maxHp = ply.getMaxHealth();
-        double hp = ply.getHealth() / (maxHp == 0 ? 20f : maxHp);
-        double deltaHp = displayHp - hp;
+        double scaledHp = ply.getHealth() / (maxHp == 0 ? 20f : maxHp);
+        double deltaScaledHp = displayScaledHp - scaledHp;
 
-        displayHp = Mth.lerp(0.25, displayHp, hp);
+        displayScaledHp = Mth.lerp(Math.pow(1f - .25, partialTick), displayScaledHp, scaledHp);
 
         int hpCol = 0xffffffff;
 
-        if (hp < .2f) {
+        if (scaledHp < .2f) {
             hpCol = 0xffff6a6a;
         } else if (ply.getArmorValue() >= 16) {
             hpCol = 0xffd9d919;
@@ -90,10 +88,10 @@ public class ComponentBottomLeft {
             hpCol = 0xff6a6aff;
         }
 
-        guiGraphics.fill(x, y + 9, x + (int)(72 * hp), y + 13, hpCol);
+        guiGraphics.fill(x, y + 9, x + (int)(72 * scaledHp), y + 13, hpCol);
 
-        if (deltaHp > 0) {
-            guiGraphics.fill(x + (int)(72 * hp), y + 9, x + (int)(72 * (hp + deltaHp)), y + 13, 0xffff5555);
+        if (deltaScaledHp > 0) {
+            guiGraphics.fill(x + (int)(72 * scaledHp), y + 9, x + (int)(72 * (scaledHp + deltaScaledHp)), y + 13, 0xffff5555);
         }
 
         guiGraphics.fill(x, y + 9, x + 72, y + 13, -1, 0x80808080);
@@ -105,8 +103,6 @@ public class ComponentBottomLeft {
 
         if (hasHungerEffect) {
             hungerColor = 0xff56ad56;
-        } else if (ModForgeArkHud.depCrockPot && ply.hasEffect(CrockPotEffects.GNAWS_GIFT.get())) {
-            hungerColor = 0xff6aa6ff;
         }
 
         guiGraphics.fill(x, y + 14, x + (int)(72 * hunger), y + 15, hungerColor);

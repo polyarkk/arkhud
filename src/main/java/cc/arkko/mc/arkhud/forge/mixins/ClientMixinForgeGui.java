@@ -19,14 +19,14 @@
 package cc.arkko.mc.arkhud.forge.mixins;
 
 import cc.arkko.mc.arkhud.forge.ModForgeArkHud;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = ForgeGui.class, remap = false)
 public class ClientMixinForgeGui extends Gui {
@@ -34,10 +34,17 @@ public class ClientMixinForgeGui extends Gui {
         super(p_232355_, p_232356_);
     }
 
-    @Inject(method = { "renderHealth", "renderFood", "renderArmor", "renderAir" }, at = @At("HEAD"), cancellable = true)
-    private void hideDefaultHud(CallbackInfo ci) {
-        if (ModForgeArkHud.shouldRenderCustomHud()) {
-            ci.cancel();
+    @WrapMethod(method = { "renderHealth", "renderFood", "renderAir" })
+    private void hideDefaultHud(int width, int height, GuiGraphics guiGraphics, Operation<Void> original) {
+        if (!ModForgeArkHud.shouldRenderCustomHud()) {
+            original.call(width, height, guiGraphics);
+        }
+    }
+
+    @WrapMethod(method = "renderArmor")
+    private void hideDefaultHud(GuiGraphics guiGraphics, int width, int height, Operation<Void> original) {
+        if (!ModForgeArkHud.shouldRenderCustomHud()) {
+            original.call(guiGraphics, width, height);
         }
     }
 }

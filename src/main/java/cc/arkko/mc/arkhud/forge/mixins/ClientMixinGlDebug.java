@@ -19,23 +19,22 @@
 package cc.arkko.mc.arkhud.forge.mixins;
 
 import cc.arkko.mc.arkhud.forge.ModForgeArkHud;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.blaze3d.platform.GlDebug;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GlDebug.class)
 public class ClientMixinGlDebug {
-    @Inject(method = "printDebugLog", at = @At("HEAD"), cancellable = true)
+    @WrapMethod(method = "printDebugLog")
     private static void GlInvalidOperationQuestionMarkWhatGlInvalidOperation(
-        int p_84039_, int p_84040_, int p_84041_, int p_84042_,
-        int p_84043_, long p_84044_, long p_84045_, CallbackInfo ci
+        int p_84039_, int p_84040_, int p_84041_, int p_84042_, int p_84043_, long p_84044_, long p_84045_,
+        Operation<Void> original
     ) {
         if (p_84041_ == 1282) {
             ModForgeArkHud.glInvalidOperation1282s++;
-
-            ci.cancel();
+        } else {
+            original.call(p_84039_, p_84040_, p_84041_, p_84042_, p_84043_, p_84044_, p_84045_);
         }
     }
 }

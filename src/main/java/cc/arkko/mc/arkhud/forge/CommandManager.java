@@ -18,7 +18,6 @@
 
 package cc.arkko.mc.arkhud.forge;
 
-import cc.arkko.mc.arkhud.forge.configs.ConfigManager;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.*;
@@ -48,6 +47,7 @@ public class CommandManager {
         registerCommandConfig(builder, "disabled", boolean.class, () -> ConfigManager.disabled, ConfigManager::setDisabled);
         registerCommandConfig(builder, "hideArmor", boolean.class, () -> ConfigManager.hideArmor, ConfigManager::setHideArmor);
         registerCommandConfig(builder, "potionEffects", boolean.class, () -> ConfigManager.potionEffects, ConfigManager::setPotionEffects);
+        registerCommandConfig(builder, "autoHideHotbar", boolean.class, () -> ConfigManager.autoHideHotbar, ConfigManager::setAutoHideHotbar);
 
         if (!FMLLoader.isProduction()) {
             registerCommand(builder, "debugGlInvalidOperation", ctx -> {
@@ -108,7 +108,7 @@ public class CommandManager {
         builder.then(
             Commands.literal(name)
                 .executes(ctx -> {
-                    printToChat(ctx, String.format("ConfigManager [%s]: %s", name, getter.get()));
+                    printToChat(ctx, String.format("Config [%s] value: %s", name, getter.get()));
 
                     return 1;
                 })

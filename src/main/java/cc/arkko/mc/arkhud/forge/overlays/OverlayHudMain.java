@@ -44,7 +44,7 @@ public class OverlayHudMain implements IGuiOverlay {
 
         mc.getProfiler().push("arkhud_rendering");
 
-        componentBottomLeft.render(mc, guiGraphics, screenHeight);
+        componentBottomLeft.render(mc, partialTick, guiGraphics, screenHeight);
         componentBottomRight.render(mc, guiGraphics, screenWidth, screenHeight);
         componentHotbar.render(mc, guiGraphics, partialTick, screenWidth, screenHeight);
         componentBottomMiddle.render(mc, guiGraphics, partialTick, screenWidth, screenHeight);

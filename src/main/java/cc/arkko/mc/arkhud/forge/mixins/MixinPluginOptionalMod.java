@@ -34,7 +34,8 @@ public class MixinPluginOptionalMod implements IMixinConfigPlugin {
         "inventoryprofilesnext", "org.anti_ad.mc.ipn",
         "crockpot", "com.sihenzhang.crockpot",
         "irons_spellbooks", "io.redspace.ironsspellbooks",
-        "pasterdream", "net.pasterdream"
+        "pasterdream", "net.pasterdream",
+        "farmersdelight", "vectorwing.farmersdelight"
     );
 
     @Override

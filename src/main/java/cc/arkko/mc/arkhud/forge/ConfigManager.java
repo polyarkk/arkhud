@@ -16,9 +16,8 @@
  *
  */
 
-package cc.arkko.mc.arkhud.forge.configs;
+package cc.arkko.mc.arkhud.forge;
 
-import cc.arkko.mc.arkhud.forge.ModForgeArkHud;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -39,11 +38,15 @@ public class ConfigManager {
     private static final ForgeConfigSpec.BooleanValue POTION_EFFECTS = CLIENT_BUILDER.comment("whether to show potion effects")
         .define("potionEffects", true);
 
+    private static final ForgeConfigSpec.BooleanValue AUTO_HIDE_HOTBAR = CLIENT_BUILDER.comment("whether to hide hotbar after idling for a few seconds")
+        .define("autoHideHotbar", false);
+
     static final ForgeConfigSpec CLIENT_SPEC = CLIENT_BUILDER.build();
 
     public static boolean disabled;
     public static boolean hideArmor;
     public static boolean potionEffects;
+    public static boolean autoHideHotbar;
 
     public static void init() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigManager.CLIENT_SPEC);
@@ -67,10 +70,17 @@ public class ConfigManager {
         ConfigManager.potionEffects = potionEffects;
     }
 
+    public static void setAutoHideHotbar(boolean autoHideHotbar) {
+        AUTO_HIDE_HOTBAR.set(autoHideHotbar);
+        AUTO_HIDE_HOTBAR.save();
+        ConfigManager.autoHideHotbar = autoHideHotbar;
+    }
+
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
         disabled = DISABLED.get();
         hideArmor = HIDE_ARMOR.get();
         potionEffects = POTION_EFFECTS.get();
+        autoHideHotbar = AUTO_HIDE_HOTBAR.get();
     }
 }

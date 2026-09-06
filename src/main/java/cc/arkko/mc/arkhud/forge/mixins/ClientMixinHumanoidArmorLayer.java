@@ -18,7 +18,7 @@
 
 package cc.arkko.mc.arkhud.forge.mixins;
 
-import cc.arkko.mc.arkhud.forge.configs.ConfigManager;
+import cc.arkko.mc.arkhud.forge.ConfigManager;
 import cc.arkko.mc.arkhud.forge.utils.U;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;

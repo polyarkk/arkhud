@@ -57,10 +57,12 @@ shell priority: use powershell in windows, bash in linux or zsh in macos
 
 Do not guess MC API/field/method names. Verify against the official mappings cached by ForgeGradle before asserting.
 
-- Mappings file: `<gradle_home>\caches\forge_gradle\minecraft_repo\versions\<mc_version>\client_mappings.txt`
+- gradle home is `D:\dev\dotgradle` (see "Project" section)
 
-    - gradle home is `D:\dev\dotgradle` (see "Project" section)
-    - example: `D:\dev\dotgradle\caches\forge_gradle\minecraft_repo\versions\1.20.1\client_mappings.txt`
+- Mapped source jar:
+  `<gradle_home>\caches\forge_gradle\minecraft_user_repo\net\minecraftforge\forge\<mc_version>-<forge_version>_mapped_official_<mc_version>\forge-<mc_version>-<forge_version>_mapped_official_<mc_version>-recomp.jar`
+
+- Mappings file: `<gradle_home>\caches\forge_gradle\minecraft_repo\versions\<mc_version>\client_mappings.txt`
 
 - Check whether a member exists (PowerShell) e.g.:`getFrameTime`, `getOffhandItem`:
 

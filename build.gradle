@@ -168,11 +168,6 @@ dependencies {
         setDevRuntime false
     }
 
-    optionalMod(libs.crock.pot) {
-        setSources false
-        setDevRuntime false
-    }
-
     optionalMod(libs.iss) {
         setSources false
         setDevRuntime false
@@ -198,8 +193,14 @@ dependencies {
 //    runtimeOnly fg.deobf("curse.maven:curios-309927:6418456")
 //    runtimeOnly fg.deobf("curse.maven:caelus-308989:5281700")
 //    runtimeOnly fg.deobf("curse.maven:geckolib-388172:8285794")
+    runtimeOnly fg.deobf(libs.crock.pot)
+    runtimeOnly fg.deobf("curse.maven:farmers-delight-398521:7801523")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.5"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.5")) {
+        jarJar.ranged(it, "[0.5.5,)")
+    }
 
 }
 

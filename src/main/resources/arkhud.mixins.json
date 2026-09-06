@@ -8,18 +8,16 @@
   "mixins": [
   ],
   "client": [
-    "ClientMixinCrockPotGnawsGiftHungerOverlay",
+    "ClientMixin3rdPartyOverlaySuppressor",
     "ClientMixinForgeGui",
     "ClientMixinGameRenderer",
     "ClientMixinGlDebug",
     "ClientMixinGui",
     "ClientMixinHumanoidArmorLayer",
-    "ClientMixinIpnLockSlotsHandler",
-    "ClientMixinIssManaBarOverlay",
     "ClientMixinKeyboardHandler",
-    "ClientMixinParcoolStaminaHUDController",
-    "ClientMixinPasterDreamPlayerHealthHUD",
-    "ClientMixinTaczGunHudOverlay"
+    "crockpot.ClientMixinGnawsGiftHungerOverlay",
+    "farmersdelight.ClientMixinFarmersDelightOverlays",
+    "ipn.ClientMixinLockSlotsHandler"
   ],
   "injectors": {
     "defaultRequire": 1
