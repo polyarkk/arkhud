@@ -61,15 +61,8 @@ public class ComponentBottomLeft {
         // head
         PlayerFaceRenderer.draw(guiGraphics, skin, x, y, avatarSize, drawHat, flip);
 
-        if (mc.options.keyShift.isDown()) {
-            // experience level
-            String text = "等级 Lv. " + ply.experienceLevel;
-
-            guiGraphics.drawString(mc.font, text, x + avatarSize + 2, y, -1);
-        } else {
-            // name
-            guiGraphics.drawString(mc.font, getNameForDisplay(ply), x + avatarSize + 2, y, -1);
-        }
+        // name
+        guiGraphics.drawString(mc.font, getNameForDisplay(ply), x + avatarSize + 2, y, -1);
 
         // health
         float maxHp = ply.getMaxHealth();

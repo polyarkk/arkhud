@@ -32,21 +32,25 @@ import java.util.List;
 public class ComponentHotbar {
     private static final int SLOT_SIZE = 16;
     private static final int SLOT_GAP = 4;
-    private static final int SCREEN_MARGIN = 4;
+    private static final int BORDER_THICKNESS = 1;
+    private static final int BORDER_COLOR = 0xff333333;
+    private static final int BORDER_COLOR_IPN_LOCKED = 0x5eff5e41;
     private static final int MAIN_HAND_PROTRUSION = 8;
     private static final int SLOT_STRIDE = SLOT_SIZE + SLOT_GAP;
     private static final int HOTBAR_SLOT_COUNT = 9;
-    private static final int HOTBAR_HEIGHT = HOTBAR_SLOT_COUNT * SLOT_SIZE + (HOTBAR_SLOT_COUNT - 1) * SLOT_GAP;
+    private static final int HOTBAR_HEIGHT = HOTBAR_SLOT_COUNT * SLOT_SIZE + (HOTBAR_SLOT_COUNT - 1) * SLOT_GAP + BORDER_THICKNESS * 2;
     private static final int ITEM_SIZE = 16;
     private static final int ITEM_OFFSET = (SLOT_SIZE - ITEM_SIZE) / 2;
     private static final float SLOT_ANIM_INTERPOLATION = 0.25F;
     private static final long HIDE_DELAY_MS = 2000L; // 无活动 2 秒后开始隐藏
     private static final float HIDE_INTERPOLATION = 0.35F; // Mth.lerp 插值系数
     private static final int BACKGROUND_COLOR = 0x80000000;
-    private static final int BORDER_THICKNESS = 1;
-    private static final int BORDER_COLOR = 0xff333333;
-    private static final int BORDER_COLOR_IPN_LOCKED = 0x5eff5e41;
+    private static final int XP_BAR_WIDTH = 2;
+    private static final int XP_BAR_GAP = 4; // 经验条与物品槽右侧的间距
+    private static final int XP_BAR_SCREEN_GAP = 2; // 经验条与屏幕右侧边界的间距
+    private static final int SCREEN_MARGIN = XP_BAR_SCREEN_GAP + XP_BAR_WIDTH + XP_BAR_GAP; // 物品槽距屏幕右侧 = 2 + 4 + 4
     private static final int HIDE_OFFSET = SCREEN_MARGIN + SLOT_SIZE + MAIN_HAND_PROTRUSION + BORDER_THICKNESS; // 完全移出屏幕右缘所需位移
+    private static final int XP_BAR_FOREGROUND_COLOR = 0xff80ff20; // 与原版经验等级文本颜色一致（8453920）
 
     // 主手槽位切换时物品的水平滑动偏移；0 = 普通位置，负值 = 向左突出
     private final float[] itemXOffset = new float[HOTBAR_SLOT_COUNT];
@@ -59,6 +63,7 @@ public class ComponentHotbar {
     private float renderOffset = 0.0F;
     private long lastActivityTime = Long.MIN_VALUE;
     private int lastSelected = -1;
+    private int lastExperienceLevel = -1;
 
     public void render(Minecraft mc, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         Entity cameraEntity = mc.getCameraEntity();
@@ -71,7 +76,7 @@ public class ComponentHotbar {
         List<ItemStack> items = player.getInventory().items;
 
         // 更新自动隐藏状态并取得当前水平位移；完全移出屏幕后不再渲染
-        int offset = offsetHideHotbar(selected, items, partialTick);
+        int offset = offsetHideHotbar(selected, items, player.experienceLevel, partialTick);
 
         if (offset >= HIDE_OFFSET) {
             return; // 窗口内已完全看不到 hotbar，不再渲染
@@ -98,7 +103,7 @@ public class ComponentHotbar {
 
         itemXOffsetInitialized = true;
 
-        // 背景体块 + outline：16px 透明黑色，间隔 4px，距离屏幕右侧 4px；主手槽位向左突出 8px
+        // 背景体块 + outline：16px 透明黑色，间隔 4px，距离屏幕右侧 SCREEN_MARGIN=10px；主手槽位向左突出 8px
         // 背景、outline 与物品使用同一插值偏移，切换主手槽位时一起平滑滑动
         // 参照原版 renderHotbar，将背景整体推到 z=-90，保证渲染在物品之后
         guiGraphics.pose().pushPose();
@@ -120,6 +125,32 @@ public class ComponentHotbar {
             int blockY = startY + i * SLOT_STRIDE;
             StaticComponents.renderItemSlot(guiGraphics, mc, blockX + ITEM_OFFSET, blockY + ITEM_OFFSET, partialTick, player, items.get(i), i + 1);
         }
+
+        // 经验条：位于物品槽右侧 XP_BAR_GAP=4px，宽 4px，距屏幕右缘 XP_BAR_SCREEN_GAP=2px
+        // 高 = 最上槽顶部到最下槽底部（HOTBAR_HEIGHT）
+        // 顶部表示最低经验值（0），底部为最高（1）；纯 fill 绘制，不使用任何贴图素材
+        // 前景色与原版经验等级文本颜色相同（0x80FF20）；隐藏逻辑随 hotbar 整体位移一并生效
+        int barX = baseBlockX + SLOT_SIZE + XP_BAR_GAP;
+        guiGraphics.fill(barX, startY - BORDER_THICKNESS, barX + XP_BAR_WIDTH, startY + HOTBAR_HEIGHT - BORDER_THICKNESS, BACKGROUND_COLOR);
+
+        int fillHeight = Math.round(player.experienceProgress * HOTBAR_HEIGHT);
+
+        if (fillHeight > 0) {
+            guiGraphics.fill(barX, startY - BORDER_THICKNESS, barX + XP_BAR_WIDTH, startY + fillHeight - BORDER_THICKNESS, XP_BAR_FOREGROUND_COLOR);
+        }
+
+        // 经验等级：显示在第一个物品槽上方，右对齐到物品槽右缘；颜色、描边与原版 renderExperienceBar 一致
+        // 原版：黑色 4 方向 ±1px 描边 + 主色 0x80FF20（8453920），等级为 0 时不显示
+        if (player.experienceLevel > 0) {
+            String levelText = Integer.toString(player.experienceLevel);
+            int textX = screenWidth - XP_BAR_SCREEN_GAP - mc.font.width(levelText) + offset;
+            int textY = startY - 10;
+            guiGraphics.drawString(mc.font, levelText, textX + 1, textY, 0, false);
+            guiGraphics.drawString(mc.font, levelText, textX - 1, textY, 0, false);
+            guiGraphics.drawString(mc.font, levelText, textX, textY + 1, 0, false);
+            guiGraphics.drawString(mc.font, levelText, textX, textY - 1, 0, false);
+            guiGraphics.drawString(mc.font, levelText, textX, textY, XP_BAR_FOREGROUND_COLOR, false);
+        }
     }
 
     /**
@@ -129,13 +160,14 @@ public class ComponentHotbar {
      * 活动事件（任一发生即刷新 2 秒计时并回显）：
      * 1. 主手槽位 selected 发生变化
      * 2. hotbar 中任意空槽位被放入新物品（槽位由空变为非空）
+     * 3. 经验等级发生变化（仅经验值/进度变化而等级数字不变时不触发）
      * <p>
      * 隐藏与回显动画均使用 Mth.lerp 指数插值，系数 HIDE_INTERPOLATION = 0.35，
      * 按 partialTick 折算，每 tick 向目标位置移动剩余距离的约 35%。
      *
      * @return 四舍五入后的水平位移像素数
      */
-    private int offsetHideHotbar(int selected, List<ItemStack> items, float partialTick) {
+    private int offsetHideHotbar(int selected, List<ItemStack> items, int experienceLevel, float partialTick) {
         float delta = 1.0F - (float)Math.pow(1.0F - HIDE_INTERPOLATION, partialTick);
 
         if (!ConfigManager.autoHideHotbar) {
@@ -146,8 +178,8 @@ public class ComponentHotbar {
 
         long now = System.currentTimeMillis();
 
-        // 活动检测：主手槽位切换，或某槽位由空变为非空
-        boolean active = selected != lastSelected;
+        // 活动检测：主手槽位切换、经验等级变化，或某槽位由空变为非空
+        boolean active = selected != lastSelected || experienceLevel != lastExperienceLevel;
 
         for (int i = 0; i < HOTBAR_SLOT_COUNT; i++) {
             boolean filled = !items.get(i).isEmpty();
@@ -164,6 +196,7 @@ public class ComponentHotbar {
         }
 
         lastSelected = selected;
+        lastExperienceLevel = experienceLevel;
 
         // 超过 HIDE_DELAY_MS 无活动则隐藏（右移出屏幕），否则回到原位显示
         int target = now - lastActivityTime >= HIDE_DELAY_MS ? HIDE_OFFSET : 0;
