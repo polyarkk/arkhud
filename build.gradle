@@ -196,6 +196,8 @@ dependencies {
     runtimeOnly fg.deobf(libs.crock.pot)
     runtimeOnly fg.deobf("curse.maven:farmers-delight-398521:7801523")
 
+    compileOnly files("./libraries/chatcore-1.0.0.jar")
+
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.5"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.5")) {

@@ -15,6 +15,7 @@
     "ClientMixinGui",
     "ClientMixinHumanoidArmorLayer",
     "ClientMixinKeyboardHandler",
+    "chatcore.ClientMixinRPGHudRenderer",
     "crockpot.ClientMixinGnawsGiftHungerOverlay",
     "farmersdelight.ClientMixinFarmersDelightOverlays",
     "ipn.ClientMixinLockSlotsHandler"

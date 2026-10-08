@@ -23,10 +23,14 @@ import cc.arkko.mc.arkhud.forge.overlays.components.ComponentBottomLeft;
 import cc.arkko.mc.arkhud.forge.overlays.components.ComponentBottomMiddle;
 import cc.arkko.mc.arkhud.forge.overlays.components.ComponentBottomRight;
 import cc.arkko.mc.arkhud.forge.overlays.components.ComponentHotbar;
+import com.rpgperspective.client.HudEditScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import org.buhuipofangle.mintui.fragment.manager.ChatManager;
 
 public class OverlayHudMain implements IGuiOverlay {
     private final ComponentBottomLeft componentBottomLeft = new ComponentBottomLeft();
@@ -40,6 +44,10 @@ public class OverlayHudMain implements IGuiOverlay {
             return;
         }
 
+        if (shouldHideCustomHud()) {
+            return;
+        }
+
         Minecraft mc = gui.getMinecraft();
 
         mc.getProfiler().push("arkhud_rendering");
@@ -50,5 +58,28 @@ public class OverlayHudMain implements IGuiOverlay {
         componentBottomMiddle.render(mc, guiGraphics, partialTick, screenWidth, screenHeight);
 
         mc.getProfiler().pop();
+    }
+
+    private boolean shouldHideCustomHud() {
+        Minecraft mc = Minecraft.getInstance();
+        Screen screen = mc.screen;
+
+        if (screen == null) {
+            return false;
+        }
+
+        if (screen instanceof HudEditScreen) {
+            return true; // hide for setting up chat bubbles' position
+        }
+
+        if (screen instanceof ChatScreen) {
+            return false; // do not hide when default chat screen is on
+        }
+
+        if (ChatManager.ClientSideEvents.isCustomChatScreen(screen)) {
+            return false;
+        }
+
+        return true;
     }
 }
